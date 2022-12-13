@@ -1,2 +1,42 @@
 tar file to download nexus
-https://download.sonatype.com/nexus/3/nexus-3.38.1-01-unix.tar.gz
+step -1 {search for "download nexus3 from browser" } 
+step -2 {always look for official doccumentation}
+ ** web site link :-https://help.sonatype.com/repomanager3/product-information/download
+step -3 {search for unix archive link }
+ ** https://download.sonatype.com/nexus/3/nexus-3.43.0-01-unix.tar.gz {example link}
+step -4 {use wget command to download copied link from the server}
+ ** wget <copied tar file link>
+step -5 {move the tar file to /opt folder if donot have /opt folder follow this step}
+ ** sudo mv <downloaded tar file name> /opt/<downloaded tar file name>
+step -6 {un tar the file}
+ ** sudo tar xf <downloaded tar file name>
+step -7 {rename the folder optional}
+ ** sudo mv <tar file name> <custom name>
+step -8 {change owner ship for the file}
+sudo chown -R <user name>:<user grouop> <file name to change owner ship>/
+ ** sudo chown -R ec2-user:ec2-user nexus3/ {example command}
+step -9 {config nexus as a service}
+ ** go to download page mentioned in "step-2" and search for "installation and updates tab" click on that then search for "Run as aservice" link in current page and click on that link
+step -10 {adding run_as_user in nexus.rc file}
+go to bin folder and serach for nexus.rc file and add user 
+ ** sudo vim bin/nexus.rc {to open file}
+#run_as_user="" {looks like this needs to uncomment this line and add user in quotes}
+step -11 {create symlink}
+ ** sudo ln -s /opt/nexus3/bin/nexus /etc/init.d/nexus {here /opt/<extracted file name>/bin/nexus /etc/init.d/nexus}
+step -12 {config nexus to start when vm reboots}
+ ** cd /etc/init.d
+ ** sudo chkconfig --add nexus
+ ** sudo chkconfig --levels 345 nexus on
+ ** sudo service nexus start
+run all commands one-by-one 
+now we successfully installed nexus on our server
+step -13 {go to browser and hit server ip address to check and sign in}
+ ** serverip:8081
+default user will be "admin"
+step -14 {default passwd can be found in the server at "/opt/sonatype-work/nexus3/admin.password"}
+ ** sudo cat /opt/sonatype-work/nexus3/admin.password to find default passwd
+step -15 {set user name and passwd}
+add your custom username and password
+
+
+installation of nexus is completed
